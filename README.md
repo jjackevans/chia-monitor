@@ -1,2 +1,2 @@
 # chia-monitor
-Monitor your node status from anywhere in the world.
+A simple Python script to pull information from the local Chia node and make it available over an API.
