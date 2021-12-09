@@ -20,8 +20,6 @@ async def test():
     blockchain_state = await get_blockchain_state(None)
     farmer_running = await is_farmer_running(None)
 
-    print(all_harvesters)
-
     status = {}
     if blockchain_state is None:
         status['state'] = "Not available"
@@ -84,11 +82,9 @@ async def test():
     #     status['plots_count'] = "Unknown"
     #     status['plots_size'] = "Unknown"
 
-    print(blockchain_state)
     if blockchain_state is not None:
         p: BlockRecord = blockchain_state['peak']
         status['block_height'] = p.height
-        print("Estimated network space: ", end="")
         status['estimated_size'] = format_bytes(blockchain_state["space"])
 
     if amounts is not None:
