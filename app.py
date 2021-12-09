@@ -11,11 +11,6 @@ import requests
 app = Flask(__name__)
 
 
-class PlotStats:
-    total_plot_size = 0
-    total_plots = 0
-
-
 
 @app.route('/status')
 async def test():
@@ -47,6 +42,13 @@ async def test():
             wallet_not_running = True
         else:
             wallet_not_ready = True
+
+
+    class PlotStats:
+        total_plot_size = 0
+        total_plots = 0
+
+
     if all_harvesters is not None:
         harvesters_local: dict = {}
         harvesters_remote: dict = {}
