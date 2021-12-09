@@ -97,8 +97,10 @@ async def test():
 
     if all_harvesters is not None and PlotStats.total_plots == 0:
         status['time_to_win'] = "Never"
+        status['time_to_win_days'] = "Never"
     else:
         status['time_to_win'] = format_minutes(minutes)
+        status['time_to_win_days'] = minutes / (60 * 24)
 
     return jsonify(status)
 
