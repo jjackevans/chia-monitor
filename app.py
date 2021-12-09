@@ -110,7 +110,7 @@ async def test():
     status['xch_price_usd'] = get_xch_price()
     if status['time_to_win'] != "Never":
         status['profit_daily'] = (2 * status['xch_price_usd']) / float(status['time_to_win_days'])
-        status['profit_30_days'] = status['daily_profit'] * 30
+        status['profit_30_days'] = status['profit_daily'] * 30
 
     return jsonify(status)
 
