@@ -6,6 +6,7 @@ from chia.consensus.block_record import BlockRecord
 from chia.util.misc import format_bytes, format_minutes
 from chia.util.network import is_localhost
 from flask import Flask, jsonify
+import requests
 
 app = Flask(__name__)
 
@@ -14,6 +15,8 @@ class PlotStats:
     total_plot_size = 0
     total_plots = 0
 
+
+
 @app.route('/status')
 async def test():
 
@@ -21,6 +24,8 @@ async def test():
     all_harvesters = await get_harvesters(None)
     blockchain_state = await get_blockchain_state(None)
     farmer_running = await is_farmer_running(None)
+
+    print(all_harvesters)
 
     status = {}
     if blockchain_state is None:
@@ -73,9 +78,9 @@ async def test():
         #
         # print("Total size of plots: ", end="")
         # print(format_bytes(PlotStats.total_plot_size))
-    else:
-        status['plots_count'] = "Unknown"
-        status['plots_size'] = "Unknown"
+    # else:
+    #     status['plots_count'] = "Unknown"
+    #     status['plots_size'] = "Unknown"
 
     print(blockchain_state)
     if blockchain_state is not None:
@@ -100,13 +105,21 @@ async def test():
         status['time_to_win_days'] = "Never"
     else:
         status['time_to_win'] = format_minutes(minutes)
-        status['time_to_win_days'] = minutes / (60 * 24)
+        status['time_to_win_days'] = int(minutes / (60 * 24))
+
+    status['xch_price_usd'] = get_xch_price()
+    if status['time_to_win'] != "Never":
+        status['profit_daily'] = (2 * status['xch_price_usd']) / float(status['time_to_win_days'])
+        status['profit_30_days'] = status['daily_profit'] * 30
 
     return jsonify(status)
 
-@app.route('/status')
-def hello_world():  # put application's code here
-    return 'Hello World!'
+def get_xch_price():
+    huobi_api = "https://api.huobi.pro/market/tickers"
+    response = requests.get(huobi_api)
+    data = response.json()['data']
+    return [x['ask'] for x in data if x['symbol'] == 'xchusdt'][0]
+
 
 
 if __name__ == '__main__':
