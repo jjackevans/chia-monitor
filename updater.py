@@ -10,13 +10,14 @@ from chia.consensus.block_record import BlockRecord
 from chia.util.misc import format_bytes, format_minutes
 from chia.util.network import is_localhost
 
-async def get_node_data():
+async def get_node_data(key):
 
     all_harvesters = await get_harvesters(None)
     blockchain_state = await get_blockchain_state(None)
     farmer_running = await is_farmer_running(None)
 
     status = {}
+    status['key'] = key
     status['plots'] = {}
     status['network'] = {}
     status['profit'] = {}
@@ -121,9 +122,10 @@ async def get_node_data():
 
 
 host_url = "http://192.168.0.31:5000/node-endpoint"
+key="abc"
 while True:
     try:
-        data = asyncio.run(get_node_data())
+        data = asyncio.run(get_node_data(key))
         print(data)
         headers = {'Content-type': 'application/json'}
         response = requests.post(host_url,headers=headers, data=data)
