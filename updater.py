@@ -122,7 +122,7 @@ async def get_node_data(key):
 
 
 host_url = "http://192.168.0.31:5000/node-endpoint"
-key="k9lccznzhgudki2o6q49bpvbzmggfzfg"
+key="axy58d6dhdcbj5wjo13sanp84dkv6qj5"
 while True:
     try:
         data = asyncio.run(get_node_data(key))
