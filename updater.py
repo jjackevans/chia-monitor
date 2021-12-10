@@ -120,7 +120,7 @@ async def get_node_data():
 #     return [x['ask'] for x in data if x['symbol'] == 'xchusdt'][0]
 
 
-host_url = "http://192.168.1.151:5000/node-endpoint"
+host_url = "http://192.168.0.31:5000/node-endpoint"
 while True:
     try:
         data = asyncio.run(get_node_data())
