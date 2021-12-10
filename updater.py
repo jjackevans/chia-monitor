@@ -1,19 +1,18 @@
+import asyncio
+from time import sleep
+
 import aiohttp
+import requests
 from chia.cmds.farm_funcs import  get_blockchain_state, get_harvesters, is_farmer_running, get_wallets_stats, \
     get_average_block_time
 from chia.cmds.units import units
 from chia.consensus.block_record import BlockRecord
 from chia.util.misc import format_bytes, format_minutes
 from chia.util.network import is_localhost
-from flask import Flask, jsonify
-import requests
-
-app = Flask(__name__)
+from flask import jsonify
 
 
-
-@app.route('/status')
-async def test():
+async def get_node_data():
 
     all_harvesters = await get_harvesters(None)
     blockchain_state = await get_blockchain_state(None)
@@ -109,20 +108,26 @@ async def test():
         status['wins']['time_to_win'] = format_minutes(minutes)
         status['wins']['time_to_win_days'] = int(minutes / (60 * 24))
 
-    status['profit']['xch_price_usd'] = get_xch_price()
-    if status['wins']['time_to_win'] != "Never" and blockchain_state is not None:
-        status['profit']['profit_daily'] = (2 * status['profit']['xch_price_usd']) / float(status['wins']['time_to_win_days'])
-        status['profit']['profit_30_days'] = status['profit']['profit_daily'] * 30
+    # status['profit']['xch_price_usd'] = get_xch_price()
+    # if status['wins']['time_to_win'] != "Never" and blockchain_state is not None:
+    #     status['profit']['profit_daily'] = (2 * status['profit']['xch_price_usd']) / float(status['wins']['time_to_win_days'])
+    #     status['profit']['profit_30_days'] = status['profit']['profit_daily'] * 30
 
     return jsonify(status)
+#
+# def get_xch_price():
+#     huobi_api = "https://api.huobi.pro/market/tickers"
+#     response = requests.get(huobi_api)
+#     data = response.json()['data']
+#     return [x['ask'] for x in data if x['symbol'] == 'xchusdt'][0]
 
-def get_xch_price():
-    huobi_api = "https://api.huobi.pro/market/tickers"
-    response = requests.get(huobi_api)
-    data = response.json()['data']
-    return [x['ask'] for x in data if x['symbol'] == 'xchusdt'][0]
 
-
-
-if __name__ == '__main__':
-    app.run()
+host_url = "http://192.168.137.170:5000/node-endpoint"
+while True:
+    try:
+        data = asyncio.run(get_node_data())
+        print(data)
+        requests.post(host_url, data=data)
+        sleep(60)
+    except Exception as e:
+        print("Failed to POST to server!")
