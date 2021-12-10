@@ -125,7 +125,8 @@ while True:
     try:
         data = asyncio.run(get_node_data())
         print(data)
-        requests.post(host_url, data=data)
+        headers = {'Content-type': 'application/json'}
+        requests.post(host_url,headers=headers, data=data)
         sleep(60)
     except Exception as e:
         print(e)
