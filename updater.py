@@ -130,4 +130,6 @@ while True:
         requests.post(host_url, data=data)
         sleep(60)
     except Exception as e:
+        print(e)
         print("Failed to POST to server!")
+        sleep(100)
