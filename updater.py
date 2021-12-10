@@ -1,6 +1,6 @@
 import asyncio
+import json
 from time import sleep
-
 import aiohttp
 import requests
 from chia.cmds.farm_funcs import  get_blockchain_state, get_harvesters, is_farmer_running, get_wallets_stats, \
@@ -9,8 +9,6 @@ from chia.cmds.units import units
 from chia.consensus.block_record import BlockRecord
 from chia.util.misc import format_bytes, format_minutes
 from chia.util.network import is_localhost
-from flask import jsonify
-
 
 async def get_node_data():
 
@@ -113,7 +111,7 @@ async def get_node_data():
     #     status['profit']['profit_daily'] = (2 * status['profit']['xch_price_usd']) / float(status['wins']['time_to_win_days'])
     #     status['profit']['profit_30_days'] = status['profit']['profit_daily'] * 30
 
-    return jsonify(status)
+    return json.dumps(status)
 #
 # def get_xch_price():
 #     huobi_api = "https://api.huobi.pro/market/tickers"
