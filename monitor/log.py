@@ -1,7 +1,7 @@
 from pygtail import Pygtail
 
 
-class log:
+class Log:
 
     def __init__(self, logfile):
         self.logfile = logfile

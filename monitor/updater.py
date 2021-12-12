@@ -10,7 +10,8 @@ from chia.consensus.block_record import BlockRecord
 from chia.util.misc import format_bytes, format_minutes
 from chia.util.network import is_localhost
 
-from monitor import config, Log
+from monitor import config, log
+from monitor.log import Log
 
 
 async def get_node_data():
@@ -112,17 +113,18 @@ async def get_node_data():
 
     return json.dumps(status)
 
-while True:
-    try:
-
-        Log.get_latest_logs()
-        data = asyncio.run(get_node_data())
-        print(data)
-        headers = {'Content-type': 'application/json'}
-        response = requests.post(config.get_endpoint(),headers=headers, data=data)
-        print(response.json())
-        sleep(60)
-    except Exception as e:
-        print(e)
-        print("Failed to POST to server!")
-        sleep(100)
+def run():
+    l: Log = log.Log()
+    while True:
+        try:
+            l.get_latest_logs()
+            data = asyncio.run(get_node_data())
+            print(data)
+            headers = {'Content-type': 'application/json'}
+            response = requests.post(config.get_endpoint(),headers=headers, data=data)
+            print(response.json())
+            sleep(60)
+        except Exception as e:
+            print(e)
+            print("Failed to POST to server!")
+            sleep(100)
