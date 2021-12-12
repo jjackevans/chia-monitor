@@ -10,14 +10,17 @@ from chia.consensus.block_record import BlockRecord
 from chia.util.misc import format_bytes, format_minutes
 from chia.util.network import is_localhost
 
-async def get_node_data(key):
+from monitor import config, Log
+
+
+async def get_node_data():
 
     all_harvesters = await get_harvesters(None)
     blockchain_state = await get_blockchain_state(None)
     farmer_running = await is_farmer_running(None)
 
     status = {}
-    status['key'] = key
+    status['key'] = config.get_key()
     status['plots'] = {}
     status['network'] = {}
     status['profit'] = {}
@@ -107,28 +110,16 @@ async def get_node_data(key):
         status['wins']['time_to_win'] = format_minutes(minutes)
         status['wins']['time_to_win_days'] = int(minutes / (60 * 24))
 
-    # status['profit']['xch_price_usd'] = get_xch_price()
-    # if status['wins']['time_to_win'] != "Never" and blockchain_state is not None:
-    #     status['profit']['profit_daily'] = (2 * status['profit']['xch_price_usd']) / float(status['wins']['time_to_win_days'])
-    #     status['profit']['profit_30_days'] = status['profit']['profit_daily'] * 30
-
     return json.dumps(status)
-#
-# def get_xch_price():
-#     huobi_api = "https://api.huobi.pro/market/tickers"
-#     response = requests.get(huobi_api)
-#     data = response.json()['data']
-#     return [x['ask'] for x in data if x['symbol'] == 'xchusdt'][0]
 
-
-host_url = "http://192.168.0.31:5000/node-endpoint"
-key="axy58d6dhdcbj5wjo13sanp84dkv6qj5"
 while True:
     try:
-        data = asyncio.run(get_node_data(key))
+
+        Log.get_latest_logs()
+        data = asyncio.run(get_node_data())
         print(data)
         headers = {'Content-type': 'application/json'}
-        response = requests.post(host_url,headers=headers, data=data)
+        response = requests.post(config.get_endpoint(),headers=headers, data=data)
         print(response.json())
         sleep(60)
     except Exception as e:

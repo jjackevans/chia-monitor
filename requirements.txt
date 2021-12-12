@@ -2,3 +2,4 @@ aiohttp~=3.7.4
 chia-blockchain~=1.2.11
 python-daemon
 requests
+pygtail
