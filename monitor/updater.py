@@ -128,3 +128,5 @@ def run():
             print(e)
             print("Failed to POST to server!")
             sleep(100)
+
+run()
