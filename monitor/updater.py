@@ -121,7 +121,7 @@ def run():
         try:
             log_data = l.get_latest_logs()
             data = asyncio.run(get_node_data())
-            data['partials'] = log_data
+            data['log_data'] = log_data
             print(data)
             headers = {'Content-type': 'application/json'}
             response = requests.post(c.get_endpoint(),headers=headers, data=data)
