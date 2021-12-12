@@ -12,6 +12,8 @@ class Log:
 
     def get_latest_logs(self):
         for log_line in Pygtail(self.logfile, read_from_end=True):
+            print(type(log_line))
+
             if "eligible for farming":
                 print(log_line)
                 print("test")
