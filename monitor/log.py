@@ -1,11 +1,14 @@
 from pygtail import Pygtail
 
+from monitor.config import Config
+
 
 class Log:
 
     def __init__(self):
+        config = Config()
         # self.logfile = logfile
-        self.logfile = "/root/.chia/mainnet/log/debug.log"
+        self.logfile = config.get_log_file()
 
     def get_latest_logs(self):
         for log_line in Pygtail(self.logfile, read_from_end=True):

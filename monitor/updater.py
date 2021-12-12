@@ -10,9 +10,11 @@ from chia.consensus.block_record import BlockRecord
 from chia.util.misc import format_bytes, format_minutes
 from chia.util.network import is_localhost
 
-from monitor import config, log
+from monitor import log
+from monitor.config import Config
 from monitor.log import Log
 
+c = Config()
 
 async def get_node_data():
 
@@ -21,7 +23,7 @@ async def get_node_data():
     farmer_running = await is_farmer_running(None)
 
     status = {}
-    status['key'] = config.get_key()
+    status['key'] = c.get_key()
     status['plots'] = {}
     status['network'] = {}
     status['profit'] = {}
@@ -121,7 +123,7 @@ def run():
             data = asyncio.run(get_node_data())
             print(data)
             headers = {'Content-type': 'application/json'}
-            response = requests.post(config.get_endpoint(),headers=headers, data=data)
+            response = requests.post(c.get_endpoint(),headers=headers, data=data)
             print(response.json())
             sleep(60)
         except Exception as e:

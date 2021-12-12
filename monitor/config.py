@@ -1,4 +1,4 @@
-class config:
+class Config:
 
     def get_log_file(self):
         return "/root/.chia/mainnet/log/debug.log"
