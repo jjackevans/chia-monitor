@@ -14,5 +14,6 @@ class Log:
         for log_line in Pygtail(self.logfile, read_from_end=True):
             if "eligible for farming":
                 print(log_line)
+                print("test")
 
 
