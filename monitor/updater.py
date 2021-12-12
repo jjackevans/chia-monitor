@@ -119,7 +119,7 @@ def run():
     l: Log = log.Log()
     while True:
         try:
-            l.get_latest_logs()
+            print(json.dumps(l.get_latest_logs()))
             data = asyncio.run(get_node_data())
             print(data)
             headers = {'Content-type': 'application/json'}
