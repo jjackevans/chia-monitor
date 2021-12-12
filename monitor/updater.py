@@ -122,9 +122,8 @@ def run():
             log_data = l.get_latest_logs()
             data = asyncio.run(get_node_data())
             data['log_data'] = log_data
-            print(data)
             headers = {'Content-type': 'application/json'}
-            response = requests.post(c.get_endpoint(),headers=headers, data=data)
+            response = requests.post(c.get_endpoint(),headers=headers, data=json.dumps(data))
             print(response.json())
             sleep(60)
         except Exception as e:
