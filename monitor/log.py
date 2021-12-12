@@ -3,7 +3,7 @@ from pygtail import Pygtail
 
 class Log:
 
-    def __init__(self, logfile):
+    def __init__(self):
         # self.logfile = logfile
         self.logfile = "/root/.chia/mainnet/log/debug.log"
 
