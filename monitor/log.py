@@ -8,7 +8,7 @@ class Log:
         self.logfile = "/root/.chia/mainnet/log/debug.log"
 
     def get_latest_logs(self):
-        for log_line in Pygtail(self._expanded_log_path, read_from_end=True):
+        for log_line in Pygtail(self.logfile, read_from_end=True):
             print(log_line)
 
 
