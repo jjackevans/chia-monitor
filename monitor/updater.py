@@ -113,14 +113,15 @@ async def get_node_data():
         status['wins']['time_to_win'] = format_minutes(minutes)
         status['wins']['time_to_win_days'] = int(minutes / (60 * 24))
 
-    return json.dumps(status)
+    return status
 
 def run():
     l: Log = log.Log()
     while True:
         try:
-            print(json.dumps(l.get_latest_logs()))
+            log_data = l.get_latest_logs()
             data = asyncio.run(get_node_data())
+            data['partials'] = log_data
             print(data)
             headers = {'Content-type': 'application/json'}
             response = requests.post(c.get_endpoint(),headers=headers, data=data)
