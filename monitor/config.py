@@ -8,10 +8,10 @@ class Config:
         print(self.config.sections())
 
     def get_log_file(self):
-        return self.config['debug_log']
+        return self.config['default']['debug_log']
 
     def get_key(self):
-        return self.config['key']
+        return self.config['default']['key']
 
     def get_endpoint(self):
-        return self.config['endpoint']
+        return self.config['default']['endpoint']
