@@ -3,7 +3,8 @@ import configparser
 class Config:
 
     def __init__(self):
-        self.config = configparser.ConfigParser().read('config.ini')['default']
+        self.config = configparser.ConfigParser()
+        self.config.read('config.ini')
 
     def get_log_file(self):
         return self.config['debug_log']
