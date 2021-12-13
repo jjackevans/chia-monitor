@@ -5,6 +5,7 @@ class Config:
     def __init__(self):
         self.config = configparser.ConfigParser()
         self.config.read('config.ini')
+        print(self.config.sections())
 
     def get_log_file(self):
         return self.config['debug_log']
