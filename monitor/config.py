@@ -4,7 +4,7 @@ class Config:
         return "/root/.chia/mainnet/log/debug.log"
 
     def get_key(self):
-        return "y0dje40o1ywt0691ml3wmsvnixbhfn5h"
+        return "l6zm9yt028rhkojveloyyasm7g19teyf"
 
     def get_endpoint(self):
-        return "http://192.168.0.31:5000/node-endpoint"
+        return "http://www.mychiamonitor.com/node-endpoint"
