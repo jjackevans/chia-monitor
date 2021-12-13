@@ -11,6 +11,7 @@ class Config:
         return self.config['default']['debug_log']
 
     def get_key(self):
+        print(self.config['default']['key'])
         return self.config['default']['key']
 
     def get_endpoint(self):
