@@ -19,6 +19,6 @@ class Log:
                 plots_loc = splitsville.index("plots") - 1
                 proof_loc = splitsville.index("proofs.") - 1
                 time_loc = splitsville.index("Time:") + 1
-                results.append({"partials":splitsville[plots_loc], "proofs":splitsville[proof_loc], "time":splitsville[time_loc] })
+                results.append({"time": splitsville[0], "partials":splitsville[plots_loc], "proofs":splitsville[proof_loc], "latency":splitsville[time_loc] })
         return results
 
