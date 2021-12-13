@@ -1,10 +1,15 @@
+import configparser
+
 class Config:
 
+    def __init__(self):
+        self.config = configparser.ConfigParser().read('config.ini')['default']
+
     def get_log_file(self):
-        return "/root/.chia/mainnet/log/debug.log"
+        return self.config['debug_log']
 
     def get_key(self):
-        return "l6zm9yt028rhkojveloyyasm7g19teyf"
+        return self.config['key']
 
     def get_endpoint(self):
-        return "http://www.mychiamonitor.com/node-endpoint"
+        return self.config['endpoint']
