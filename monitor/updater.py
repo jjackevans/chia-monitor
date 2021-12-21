@@ -79,7 +79,7 @@ async def get_node_data():
             print(f"Remote Harvester{'s' if len(harvester_peers) > 1 else ''} for IP: {harvester_ip}")
             process_harvesters(harvester_peers)
 
-    status['plots']['plots_count'] = len(PlotStats.total_plots)
+    status['plots']['plots_count'] = PlotStats.total_plots
     status['plots']['plots_size'] = format_bytes(PlotStats.total_plot_size)
 
     if blockchain_state is not None:
