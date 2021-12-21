@@ -66,15 +66,16 @@ async def get_node_data(key):
                 total_plot_size_harvester = sum(map(lambda x: x["file_size"], plots["plots"]))
                 PlotStats.total_plot_size += total_plot_size_harvester
                 PlotStats.total_plots += len(plots["plots"])
-                status['plots']['plots_count'] = len(plots['plots'])
-                status['plots']['plots_size'] = format_bytes(total_plot_size_harvester)
 
         if len(harvesters_local) > 0:
             print(f"Local Harvester{'s' if len(harvesters_local) > 1 else ''}")
             process_harvesters(harvesters_local)
-        # for harvester_ip, harvester_peers in harvesters_remote.items():
-        #     print(f"Remote Harvester{'s' if len(harvester_peers) > 1 else ''} for IP: {harvester_ip}")
-        #     process_harvesters(harvester_peers)
+        for harvester_ip, harvester_peers in harvesters_remote.items():
+            print(f"Remote Harvester{'s' if len(harvester_peers) > 1 else ''} for IP: {harvester_ip}")
+            process_harvesters(harvester_peers)
+
+        status['plots']['plots_count'] = len(PlotStats.total_plots)
+        status['plots']['plots_size'] = format_bytes(PlotStats.total_plot_size)
 
         # print(f"Plot count for all harvesters: {PlotStats.total_plots}")
         #
@@ -113,13 +114,6 @@ async def get_node_data(key):
     #     status['profit']['profit_30_days'] = status['profit']['profit_daily'] * 30
 
     return json.dumps(status)
-#
-# def get_xch_price():
-#     huobi_api = "https://api.huobi.pro/market/tickers"
-#     response = requests.get(huobi_api)
-#     data = response.json()['data']
-#     return [x['ask'] for x in data if x['symbol'] == 'xchusdt'][0]
-
 
 host_url = "http://192.168.0.31:5000/node-endpoint"
 key="axy58d6dhdcbj5wjo13sanp84dkv6qj5"
