@@ -72,23 +72,15 @@ async def get_node_data():
                 total_plot_size_harvester = sum(map(lambda x: x["file_size"], plots["plots"]))
                 PlotStats.total_plot_size += total_plot_size_harvester
                 PlotStats.total_plots += len(plots["plots"])
-                status['plots']['plots_count'] = len(plots['plots'])
-                status['plots']['plots_size'] = format_bytes(total_plot_size_harvester)
-
         if len(harvesters_local) > 0:
             print(f"Local Harvester{'s' if len(harvesters_local) > 1 else ''}")
             process_harvesters(harvesters_local)
-        # for harvester_ip, harvester_peers in harvesters_remote.items():
-        #     print(f"Remote Harvester{'s' if len(harvester_peers) > 1 else ''} for IP: {harvester_ip}")
-        #     process_harvesters(harvester_peers)
+        for harvester_ip, harvester_peers in harvesters_remote.items():
+            print(f"Remote Harvester{'s' if len(harvester_peers) > 1 else ''} for IP: {harvester_ip}")
+            process_harvesters(harvester_peers)
 
-        # print(f"Plot count for all harvesters: {PlotStats.total_plots}")
-        #
-        # print("Total size of plots: ", end="")
-        # print(format_bytes(PlotStats.total_plot_size))
-    # else:
-    #     status['plots_count'] = "Unknown"
-    #     status['plots_size'] = "Unknown"
+    status['plots']['plots_count'] = len(PlotStats.total_plots)
+    status['plots']['plots_size'] = format_bytes(PlotStats.total_plot_size)
 
     if blockchain_state is not None:
         p: BlockRecord = blockchain_state['peak']
@@ -121,6 +113,7 @@ def run():
         try:
             log_data = l.get_latest_logs()
             data = asyncio.run(get_node_data())
+            print(data)
             data['log_data'] = log_data
             headers = {'Content-type': 'application/json'}
             response = requests.post(c.get_endpoint(),headers=headers, data=json.dumps(data))
